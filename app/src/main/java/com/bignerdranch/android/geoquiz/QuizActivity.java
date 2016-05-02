@@ -30,11 +30,17 @@ public class QuizActivity extends AppCompatActivity {
       mQuestionTextView.setText(question);
    }
 
+   // Increment the currently displayed question
+   private void nextQuestion() {
+      mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+      updateQuestion();
+   }
+
    // Check the answer (button press vs. correct answer)
    private void checkAnswer(boolean userPressedTrue) {
 
       boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
-      int messageResId = 0;
+      int messageResId;
 
       if (userPressedTrue == answerIsTrue) {
          messageResId = R.string.correct_toast;
@@ -77,8 +83,15 @@ public class QuizActivity extends AppCompatActivity {
       mNextButton.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-            mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-            updateQuestion();
+            nextQuestion();
+         }
+      });
+
+      // Add listener for if user taps on question to move to the next question
+      mQuestionTextView.setOnClickListener(new View.OnClickListener(){
+         @Override
+         public void onClick(View v) {
+            nextQuestion();
          }
       });
 
