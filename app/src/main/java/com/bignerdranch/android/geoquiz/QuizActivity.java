@@ -12,6 +12,7 @@ public class QuizActivity extends AppCompatActivity {
    private Button mTrueButton;
    private Button mFalseButton;
    private Button mNextButton;
+   private Button mPrevButton;
    private TextView mQuestionTextView;
    private int mCurrentIndex = 0;
 
@@ -33,6 +34,17 @@ public class QuizActivity extends AppCompatActivity {
    // Increment the currently displayed question
    private void nextQuestion() {
       mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+      updateQuestion();
+   }
+
+   // Decrement the currently displayed question
+   private void prevQuestion() {
+      if (mCurrentIndex > 0) {
+         mCurrentIndex = (mCurrentIndex - 1) % mQuestionBank.length;
+      } else {
+         mCurrentIndex = mQuestionBank.length - 1;
+      }
+
       updateQuestion();
    }
 
@@ -62,6 +74,7 @@ public class QuizActivity extends AppCompatActivity {
       mTrueButton = (Button) findViewById(R.id.true_button);
       mFalseButton = (Button) findViewById(R.id.false_button);
       mNextButton = (Button) findViewById(R.id.next_button);
+      mPrevButton = (Button) findViewById(R.id.prev_button);
 
       // Add Listener for True button
       mTrueButton.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +89,14 @@ public class QuizActivity extends AppCompatActivity {
          @Override
          public void onClick(View v) {
             checkAnswer(false);
+         }
+      });
+
+      // Add listener for Prev button
+      mPrevButton.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+            prevQuestion();
          }
       });
 
