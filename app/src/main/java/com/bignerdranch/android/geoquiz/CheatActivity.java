@@ -89,7 +89,7 @@ public class CheatActivity extends AppCompatActivity {
 
       // Reset and saved instance data
       if (savedInstanceState != null) {
-         mAnswerWasShown = savedInstanceState.getBoolean(KEY_CHEATED);
+         mAnswerWasShown = savedInstanceState.getBoolean(KEY_CHEATED, false);
 
          if (mAnswerWasShown) {
             setAnswerText();
