@@ -15,11 +15,13 @@ public class CheatActivity extends AppCompatActivity {
          "com.bignerdranch.android.geoquiz.answer_is_true";
    private static final String EXTRA_ANSWER_SHOWN =
          "com.bignerdranch.android.geoquiz.answer_shown";
+   private static final String KEY_CHEATED = "showedAnswer";
 
    /**********************/
    // INSTANCE VARIABLES //
    /**********************/
    private boolean mAnswerIsTrue;
+   private boolean mAnswerWasShown;
    private Button mShowAnswer;
    private TextView mAnswerTextView;
 
@@ -48,6 +50,17 @@ public class CheatActivity extends AppCompatActivity {
       setResult(RESULT_OK, data);
    }
 
+   // Set the answer TextView field to show the answer
+   private void setAnswerText() {
+      if (mAnswerIsTrue) {
+         mAnswerTextView.setText(R.string.true_button);
+      } else {
+         mAnswerTextView.setText(R.string.false_button);
+      }
+
+      setAnswerShownResult(true);
+   }
+
    /******************************/
    // ACTIVITY LIFECYCLE METHODS //
    /******************************/
@@ -68,17 +81,26 @@ public class CheatActivity extends AppCompatActivity {
 
          @Override
          public void onClick(View v) {
-            if (mAnswerIsTrue) {
-               mAnswerTextView.setText(R.string.true_button);
-            } else {
-               mAnswerTextView.setText(R.string.false_button);
-            }
-
-            setAnswerShownResult(true);
-
+            mAnswerWasShown = true;
+            setAnswerText();
          }
 
       });
 
+      // Reset and saved instance data
+      if (savedInstanceState != null) {
+         mAnswerWasShown = savedInstanceState.getBoolean(KEY_CHEATED);
+
+         if (mAnswerWasShown) {
+            setAnswerText();
+         }
+      }
+
    }
+
+   protected void onSaveInstanceState(Bundle savedInstanceState) {
+      super.onSaveInstanceState(savedInstanceState);
+      savedInstanceState.putBoolean(KEY_CHEATED, mAnswerWasShown);
+   }
+
 }
